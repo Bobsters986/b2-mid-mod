@@ -42,6 +42,7 @@ group :development, :test do
   gem 'capybara'
   gem 'launchy'
   gem 'net-http'
+  gem 'orderly'
 end
 
 group :development do
