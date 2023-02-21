@@ -1,13 +1,24 @@
 <h2><%= @employee.name%>'s Page</h2>
-<h3>Department Name: <%= @employee.department.name %></h3>
-<h3>Tickets:</h3>
+<h3>Department</h3>
+<h4>- Name: <%= @employee.department.name %></h4>
+<h4>- Level: <%= @employee.level %> </h4>
+<h3>- Tickets:</h3>
+
 <p>
 <% @tickets.each do |ticket| %>
   Subject: <%= ticket.subject %>, Age: <%= ticket.age %>
   <br>
+  <br>
 <% end %>
 </p>
+
 <p>Oldest Ticket: <%= @tickets.first.subject %></p>
+
+<p>
+Tickets Shared With: <% @shared_names.each do |name| %>
+  <%= name %>
+<% end %>
+</p>
 
 <%= form_with url: "/employees/#{@employee.id}/employee_tickets", method: :post, local: true do |form| %>
   <%= form.label :ticket_id, "ID:" %>

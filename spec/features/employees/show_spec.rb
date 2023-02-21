@@ -12,18 +12,20 @@ RSpec.describe 'Employee Show', type: :feature do
   before do
     EmployeeTicket.create!(ticket: bug, employee: axel)
     EmployeeTicket.create!(ticket: refactor, employee: axel)
+    EmployeeTicket.create!(ticket: refactor, employee: meredith)
+    EmployeeTicket.create!(ticket: bug, employee: meredith)
+
+    visit "/employees/#{axel.id}"
   end
 
   describe 'when I visit /employees/:id' do
     it 'I see the employee info' do
-      visit "/employees/#{axel.id}"
 
       expect(page).to have_content("#{axel.name}'s Page")
-      expect(page).to have_content("Department Name: #{axel.department.name}")
+      expect(page).to have_content("Name: #{axel.department.name}")
     end
 
     it 'I see the employees tickets' do
-      visit "/employees/#{axel.id}"
       
       expect(page).to have_content("Subject: #{bug.subject}")
       expect(page).to have_content("Age: #{bug.age}")
@@ -31,21 +33,18 @@ RSpec.describe 'Employee Show', type: :feature do
     end
 
     it 'I see the tickets listed by oldest to newest, as well as oldest listed separately' do
-      visit "/employees/#{axel.id}"
       
       expect("Refactor").to appear_before("Bug")
       expect(page).to have_content("Oldest Ticket: #{refactor.subject}")
     end
 
     it 'I see a form to add a ticket to the employee' do
-      visit "/employees/#{axel.id}"
       
       expect(page).to have_field(:ticket_id)
       expect(page).to have_button(:Submit)
     end
 
     it 'I can add the ticket ID and remain on the employees show page where I see the new ticket' do
-      visit "/employees/#{axel.id}"
 
       fill_in :ticket_id, with: error.id
       click_button :Submit
@@ -55,6 +54,10 @@ RSpec.describe 'Employee Show', type: :feature do
       expect(current_path).to eq("/employees/#{axel.id}")
       expect(page).to have_content("Subject: #{error.subject}")
       expect(page).to have_content("Age: #{error.age}")
+    end
+
+    it 'I see a unique list of all the other employees that this employee shares tickets with' do
+
     end
   end
 end
