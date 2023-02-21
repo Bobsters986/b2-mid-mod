@@ -8,3 +8,9 @@
 <% end %>
 </p>
 <p>Oldest Ticket: <%= @tickets.first.subject %></p>
+
+<%= form_with url: "/employees/#{@employee.id}/employee_tickets", method: :post, local: true do |form| %>
+  <%= form.label :ticket_id, "ID:" %>
+  <%= form.number_field :ticket_id %>
+  <%= form.submit :Submit %>
+<% end %>
